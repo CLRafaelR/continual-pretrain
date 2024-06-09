@@ -1,6 +1,6 @@
 model:
-  model: elyza/ELYZA-japanese-Llama-2-7b
-  tokenizer: elyza/ELYZA-japanese-Llama-2-7b
+  model: microsoft/Phi-3-mini-128k-instruct
+  tokenizer: microsoft/Phi-3-mini-128k-instruct
   use_cache: False
   max_length: 512
 
@@ -12,19 +12,19 @@ train: # huggingfaceのTrainingArgumentsで利用
   save_strategy: steps
   learning_rate: 1e-6
   num_train_epochs: 3
-  per_device_train_batch_size: 3
+  per_device_train_batch_size: 1
   per_device_eval_batch_size: 3
-  gradient_accumulation_steps: 2
+  gradient_accumulation_steps: 4
   gradient_checkpointing: True
   weight_decay: 0.01 # 適当
   warmup_ratio: 0.1 # 適当
   optim: adamw_torch # 適当
-  fp16: True
-  bf16: False
-  dataloader_num_workers: 4
+  fp16: False
+  bf16: True
+  dataloader_num_workers: 1
   eval_steps: 50
-  save_steps: 50
-  logging_steps: 50
+  save_steps: 100
+  logging_steps: 100
   run_name: test # wandbのプロジェクト名
   save_total_limit: 2
   save_on_each_node: False
