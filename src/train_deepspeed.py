@@ -2,12 +2,9 @@ import argparse
 import os
 import warnings
 from typing import Dict, List
-
-warnings.filterwarnings("ignore")
-
 import deepspeed
 import torch
-from datasets import Dataset, load_dataset
+from datasets import load_dataset
 from omegaconf import OmegaConf
 from transformers import (
     AutoModelForCausalLM,
@@ -16,14 +13,19 @@ from transformers import (
     Trainer,
     TrainingArguments,
 )
+from multiprocessing import Pool
 
 from utils import seed_everything
+
+warnings.filterwarnings("ignore")
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # 分散処理させるときにwarningが出たため
 
 
 def preprocess_function(
-    examples: Dict[str, List[str]], tokenizer: PreTrainedTokenizer, max_length: int
+    examples: Dict[str, List[str]],
+    tokenizer: PreTrainedTokenizer,
+    max_length: int,
 ) -> Dict[str, List[int]]:
     """
     与えられたテキストをトークナイズし、ラベルを追加する前処理関数。
@@ -56,7 +58,14 @@ def main():
         default="./configs/train_configs/train_base.yaml",
         help="モデルパラメータのコンフィグ。yamlファイル",
     )
-    parser.add_argument("--local_rank", "-l", type=int, default=0, help="GPUのランク")
+    parser.add_argument(
+        # 単一ノードで実行されているプロセスの一意のローカル ID
+        "--local_rank",
+        "-l",
+        type=int,
+        default=0,
+        help="GPUのランク",
+    )
     args = parser.parse_args()
     local_rank = args.local_rank
     # コンフィグ読み込み
@@ -70,7 +79,10 @@ def main():
 
     # モデルの定義
     model = AutoModelForCausalLM.from_pretrained(
-        config.model.model, torch_dtype=torch.float16, use_cache=config.model.use_cache
+        config.model.model,
+        torch_dtype=torch.float16,
+        use_cache=config.model.use_cache,
+        device_map={"": 0},
     )
     tokenizer = AutoTokenizer.from_pretrained(
         config.model.tokenizer,
@@ -79,7 +91,9 @@ def main():
 
     # データセットの読み込み
     dataset = load_dataset(
-        config.dataset.path, config.dataset.subset, split=config.dataset.split
+        config.dataset.path,
+        config.dataset.subset,
+        split=config.dataset.split,
     )
 
     # データをモデルに入力できるように変換
@@ -89,6 +103,7 @@ def main():
         ),
         batched=True,
         remove_columns=dataset.column_names,
+        num_proc=32,
     )
 
     dataset = dataset.train_test_split(test_size=0.2)

@@ -13,14 +13,14 @@ train: # huggingfaceのTrainingArgumentsで利用
   learning_rate: 1e-6
   num_train_epochs: 3
   per_device_train_batch_size: 1
-  per_device_eval_batch_size: 3
-  gradient_accumulation_steps: 4
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16
   gradient_checkpointing: True
   weight_decay: 0.01 # 適当
   warmup_ratio: 0.1 # 適当
-  optim: adamw_torch # 適当
-  fp16: False
-  bf16: True
+  optim: adamw_bnb_8bit # adamw_torch # 適当
+  fp16: True
+  bf16: False
   dataloader_num_workers: 1
   eval_steps: 50
   save_steps: 100

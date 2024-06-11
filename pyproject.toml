@@ -95,6 +95,7 @@ nvidia-cusolver-cu12 = {version = "^11.4.5.107", source = "torch_cu121"}
 nvidia-cusparse-cu12 = {version = "^12.1.0.106", source = "torch_cu121"}
 nvidia-nccl-cu12 = {version = "^2.20.5", source = "torch_cu121"}
 nvidia-nvtx-cu12 = {version = "^12.1.105", source = "torch_cu121"}
+triton = "^2.3.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
