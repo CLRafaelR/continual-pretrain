@@ -33,13 +33,18 @@ poetry add llama-cpp-python --source llama_cpp_python_cu121
 
 # abci/requirements.txtにあるcu11バージョンのパッケージをcu12にしてインストール
 poetry add torch --source torch_cu121 nvidia-cublas-cu12 nvidia-cuda-cupti-cu12 nvidia-cuda-nvrtc-cu12 nvidia-cuda-runtime-cu12 nvidia-cudnn-cu12 nvidia-cufft-cu12 nvidia-curand-cu12 nvidia-cusolver-cu12 nvidia-cusparse-cu12 nvidia-nccl-cu12 nvidia-nvtx-cu12
+
+# FlashAtteintion-2のインストール
+poetry add wheel
+poetry run pip install flash-attn --no-build-isolation
 ```
 
 ## シングルノードでの学習
 
 ```bash
 cd continual-pretrain
-poetry run deepspeed src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml
+# poetry run deepspeed src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml
+poetry run deepspeed src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml --deepspeed --deepspeed_config ./configs/deepspeed/ds_config_zero2.json
 ```
 
 ## マルチノードでの学習

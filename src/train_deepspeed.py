@@ -13,8 +13,7 @@ from transformers import (
     Trainer,
     TrainingArguments,
 )
-from multiprocessing import Pool
-
+import gc
 from utils import seed_everything
 
 warnings.filterwarnings("ignore")
@@ -83,6 +82,7 @@ def main():
         torch_dtype=torch.float16,
         use_cache=config.model.use_cache,
         device_map={"": 0},
+        use_flash_attention_2=True,
     )
     tokenizer = AutoTokenizer.from_pretrained(
         config.model.tokenizer,
@@ -122,6 +122,13 @@ def main():
     # trainer.train()
     with torch.autocast("cuda"):
         trainer.train()
+
+    del dataset
+    del trainer
+
+    gc.collect()
+    deepspeed.runtime.utils.empty_cache()
+    torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":

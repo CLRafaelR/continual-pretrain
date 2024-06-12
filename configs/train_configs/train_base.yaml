@@ -6,7 +6,7 @@ model:
 
 
 train: # huggingfaceのTrainingArgumentsで利用
-  output_dir: ../outputs
+  output_dir: ./outputs
   evaluation_strategy: steps
   logging_strategy: steps
   save_strategy: steps
@@ -14,11 +14,11 @@ train: # huggingfaceのTrainingArgumentsで利用
   num_train_epochs: 3
   per_device_train_batch_size: 1
   per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 16
+  gradient_accumulation_steps: 256 # per_device_train_bath_size*gradient_accumulation_steps=256
   gradient_checkpointing: True
   weight_decay: 0.01 # 適当
   warmup_ratio: 0.1 # 適当
-  optim: adamw_bnb_8bit # adamw_torch # 適当
+  optim: adamw_bnb_8bit # adamw_torch
   fp16: True
   bf16: False
   dataloader_num_workers: 1
@@ -29,8 +29,11 @@ train: # huggingfaceのTrainingArgumentsで利用
   save_total_limit: 2
   save_on_each_node: False
   neftune_noise_alpha: 5 # NEFTTune　適当
-  deepspeed: ./configs/deepspeed/ds_config_zero3.json
+  # deepspeed: ./configs/deepspeed/ds_config_zero2.json
   report_to: wandb
+  # https://zenn.dev/selllous/articles/transformers_pretrain_to_ft#%E5%AD%A6%E7%BF%92%E9%80%9F%E5%BA%A6%E9%AB%98%E9%80%9F%E5%8C%96
+  torch_compile: True
+  logging_dir: ./outputs/log
   
 seed: 42
 
