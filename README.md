@@ -43,8 +43,9 @@ poetry run pip install flash-attn --no-build-isolation
 
 ```bash
 cd continual-pretrain
-# poetry run deepspeed src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml
-poetry run deepspeed src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml --deepspeed --deepspeed_config ./configs/deepspeed/ds_config_zero2.json
+poetry run deepspeed src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml
+# see here to some more workaround: https://github.com/microsoft/DeepSpeed/issues/3961
+# poetry run deepspeed --deepspeed --deepspeed_config ./configs/deepspeed/ds_config_zero2.json src/train_deepspeed.py --train_config ./configs/train_configs/train_base.yaml
 ```
 
 ## マルチノードでの学習
