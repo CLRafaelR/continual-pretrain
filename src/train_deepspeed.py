@@ -82,7 +82,7 @@ def main():
         torch_dtype=torch.float16,
         use_cache=config.model.use_cache,
         device_map={"": 0},
-        use_flash_attention_2=True,
+        attn_implementation="flash_attention_2",
     )
     tokenizer = AutoTokenizer.from_pretrained(
         config.model.tokenizer,
@@ -91,9 +91,10 @@ def main():
 
     # データセットの読み込み
     dataset = load_dataset(
-        config.dataset.path,
-        config.dataset.subset,
+        path=config.dataset.path,
+        name=config.dataset.subset,
         split=config.dataset.split,
+        cache_dir=config.dataset.cache_dir,
     )
 
     # データをモデルに入力できるように変換

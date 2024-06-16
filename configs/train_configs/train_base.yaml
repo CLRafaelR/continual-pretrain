@@ -19,12 +19,12 @@ train: # huggingfaceのTrainingArgumentsで利用
   weight_decay: 0.01 # 適当
   warmup_ratio: 0.1 # 適当
   optim: adamw_bnb_8bit # adamw_torch
-  fp16: True
-  bf16: False
+  fp16: False
+  bf16: True
   dataloader_num_workers: 1
   eval_steps: 50
   save_steps: 100
-  logging_steps: 100
+  logging_steps: 5
   run_name: test # wandbのプロジェクト名
   save_total_limit: 2
   save_on_each_node: False
@@ -41,3 +41,4 @@ dataset:
   path: hotchpotch/wikipedia-ja-20231030
   subset: chunked #!!null
   split: train
+  cache_dir: /mnt/d/huggingface/datasets

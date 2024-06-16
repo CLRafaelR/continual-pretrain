@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 fsspec = "2024.3.1"
 datasets = "^2.19.2"
 accelerate = "^0.31.0"
@@ -45,7 +45,7 @@ numpy = "^1.26.4"
 nvidia-ml-py = "^12.555.43"
 packaging = "^24.0"
 pandas = "^2.2.2"
-peft = "^0.11.1"
+peft = "0.6.0"
 protobuf = "<5.0.0"
 psutil = "^5.9.8"
 py-cpuinfo = "^9.0.0"
@@ -82,23 +82,23 @@ wandb = "^0.17.1"
 xxhash = "^3.4.1"
 yarl = "^1.9.4"
 omegaconf = "^2.3.0"
-llama-cpp-python = {version = "^0.2.77", source = "llama_cpp_python_cu121"}
-torch = {version = "^2.3.1+cu121", source = "torch_cu121"}
-nvidia-cublas-cu12 = {version = "^12.1.3.1", source = "torch_cu121"}
-nvidia-cuda-cupti-cu12 = {version = "^12.1.105", source = "torch_cu121"}
-nvidia-cuda-nvrtc-cu12 = {version = "^12.1.105", source = "torch_cu121"}
-nvidia-cuda-runtime-cu12 = {version = "^12.1.105", source = "torch_cu121"}
-nvidia-cudnn-cu12 = {version = "^8.9.2.26", source = "torch_cu121"}
-nvidia-cufft-cu12 = {version = "^11.0.2.54", source = "torch_cu121"}
-nvidia-curand-cu12 = {version = "^10.3.2.106", source = "torch_cu121"}
-nvidia-cusolver-cu12 = {version = "^11.4.5.107", source = "torch_cu121"}
-nvidia-cusparse-cu12 = {version = "^12.1.0.106", source = "torch_cu121"}
-nvidia-nccl-cu12 = {version = "^2.20.5", source = "torch_cu121"}
-nvidia-nvtx-cu12 = {version = "^12.1.105", source = "torch_cu121"}
-triton = "^2.3.1"
+llama-cpp-python = { version = "^0.2.77", source = "llama_cpp_python_cu121" }
+torch = { version = "^2.3.1+cu121", source = "torch_cu121" }
+nvidia-cublas-cu12 = { version = "^12.1.3.1", source = "torch_cu121" }
+nvidia-cuda-cupti-cu12 = { version = "^12.1.105", source = "torch_cu121" }
+nvidia-cuda-nvrtc-cu12 = { version = "^12.1.105", source = "torch_cu121" }
+nvidia-cuda-runtime-cu12 = { version = "^12.1.105", source = "torch_cu121" }
+nvidia-cudnn-cu12 = { version = "^8.9.2.26", source = "torch_cu121" }
+nvidia-cufft-cu12 = { version = "^11.0.2.54", source = "torch_cu121" }
+nvidia-curand-cu12 = { version = "^10.3.2.106", source = "torch_cu121" }
+nvidia-cusolver-cu12 = { version = "^11.4.5.107", source = "torch_cu121" }
+nvidia-cusparse-cu12 = { version = "^12.1.0.106", source = "torch_cu121" }
+nvidia-nccl-cu12 = { version = "^2.20.5", source = "torch_cu121" }
+nvidia-nvtx-cu12 = { version = "^12.1.105", source = "torch_cu121" }
 optimum = "^1.20.0"
 tensorboard = "^2.17.0"
 wheel = "^0.43.0"
+pytorch-triton = { version = "^2.3.0", source = "torch_cu121" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
@@ -121,6 +121,12 @@ priority = "explicit"
 [[tool.poetry.source]]
 name = "llama_cpp_python_cu121"
 url = "https://abetlen.github.io/llama-cpp-python/whl/cu121"
+priority = "explicit"
+
+
+[[tool.poetry.source]]
+name = "torch_nightly_cu121"
+url = "https://download.pytorch.org/whl/nightly/cu121/"
 priority = "explicit"
 
 [build-system]

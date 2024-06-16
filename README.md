@@ -5,6 +5,11 @@
 
 ## パッケージのインストール
 
+`torch.compile`を使うため，pythonは3.11でなければならない
+
+Torch compile does not work on python 3.12 · Issue #120233 · pytorch/pytorch
+https://github.com/pytorch/pytorch/issues/120233
+
 ```bash
 sudo apt update
 sudo apt upgrade
@@ -27,6 +32,7 @@ poetry remove torch nvidia-cublas-cu11 nvidia-cuda-cupti-cu11 nvidia-cuda-nvrtc-
 
 # CUDA 12.1対応のtorchとllama-cpp-pythonをインストール
 poetry source add torch_cu121 --priority=explicit https://download.pytorch.org/whl/cu121
+# poetry source add torch_nightly_cu121 --priority=explicit https://download.pytorch.org/whl/nightly/cu121/
 poetry source add llama_cpp_python_cu121 --priority=explicit https://abetlen.github.io/llama-cpp-python/whl/cu121
 
 poetry add llama-cpp-python --source llama_cpp_python_cu121
@@ -38,6 +44,13 @@ poetry add torch --source torch_cu121 nvidia-cublas-cu12 nvidia-cuda-cupti-cu12 
 poetry add wheel
 poetry run pip install flash-attn --no-build-isolation
 ```
+
+- 以下に従い，peftを0.6.0にダウングレード  
+  ValueError: Attempting to unscale FP16 gradients. · Issue #1764 · hiyouga/LLaMA-Factory
+  https://github.com/hiyouga/LLaMA-Factory/issues/1764#issuecomment-1846739062
+- モデルをfp16で読み込むときは，学習可能な重みはfp32にする（少なくともfp16以外にする）  
+  modules_to_save: "ValueError: Attempting to unscale FP16 gradients" · Issue #341 · huggingface/peft
+  https://github.com/huggingface/peft/issues/341#issuecomment-1884911753
 
 ## シングルノードでの学習
 
